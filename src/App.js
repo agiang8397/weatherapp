@@ -20,7 +20,10 @@ function App() {
         const response = await fetch(url);
         const data = await response.json();
         if (response.ok) {
-          setWeatherInfo(JSON.stringify(data));
+          setErrorMessage("");
+          setWeatherInfo(
+            `${data.name}, ${data.sys.country} ${data.weather[0].description}, ${data.main.temp}`
+          );
         } else {
           setErrorMessage(data.message);
         }
@@ -49,8 +52,10 @@ function App() {
       </form>
       {loading ? (
         <div>Loading</div>
+      ) : errorMessage ? (
+        <div style={{ color: "red" }}>{errorMessage}</div>
       ) : (
-        <div>{errorMessage ? errorMessage : weatherInfo}</div>
+        <div>{weatherInfo}</div>
       )}
     </>
   );
